@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WDB Games</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="navbar"></div>
+		<div id="container"></div>
+		<script src="main.js"></script>
+		<script>
+			document.body.dataset.theme = localStorage.getItem("theme") || "dark";
+		
+			const g_params = new URLSearchParams(window.location.search);
+			let g_btnSelected = Number(g_params.get("b") || 1);
+			
+			const g_cache = {};
+			const g_navbar = document.getElementById("navbar");
+			const g_container = document.getElementById("container");
+			const g_btn = [];
+
+			async function fetchData(url) {
+				if (g_cache[url]) {
+					return g_cache[url];
+				}
+
+				const response = await fetch(url);
+				const data = await response.json();
+				g_cache[url] = data;
+				return data;
+			}
+
+			function createBtn(id, title) {
+				g_btn[id] = document.createElement("button");
+				g_btn[id].textContent = title;
+				g_btn[id].className = id === 0 ? "settings-button" : "button";
+				g_btn[id].onclick = () => {
+					if (g_btnSelected !== id) {
+						loadBtn(id);
+					}
+				};
+
+				g_navbar.appendChild(g_btn[id]);
+			}
+
+			function loadBtn(id) {
+				g_container.textContent = "";
+				g_container.className = id === 0 ? "settings-container" : "boxes-container";
+				g_btnSelected = id;
+
+				for (let i = 0; i < g_btn.length; ++i) {
+					if (g_btnSelected === i) {
+						g_btn[i].classList.add("active");
+					} else {
+						g_btn[i].classList.remove("active");
+					}
+				}
+
+				switch (id) {
+					case 0:
+						loadSettings();
+						break;
+					case 1:
+						loadWDBG();
+						break;
+					case 2:
+						loadGN();
+						break;
+					case 3:
+						loadCMG();
+						break;
+				}
+			}
+
+			function createBox(imgSrc, name, url, target) {
+				const box = document.createElement("div");
+				box.className = "box";
+
+				const img = document.createElement("img");
+				img.loading = "lazy";
+				img.src = imgSrc;
+				img.onerror = () => {
+					img.src = "assets/error.png";
+				};
+				box.appendChild(img);
+
+				const a = document.createElement("a");
+				a.textContent = name;
+				a.href = url;
+				a.target = "_blank";
+				box.appendChild(a);
+
+				target.appendChild(box);
+			}
+
+			function createSetting(name, item, placeholder, value, target) {
+				const setting = document.createElement("div");
+				setting.className = "setting";
+
+				const title = document.createElement("p");
+				title.textContent = name;
+				setting.appendChild(title);
+
+				const input = document.createElement("input");
+				input.placeholder = placeholder;
+				input.value = value;
+				input.id = item;
+				setting.appendChild(input);
+
+				target.appendChild(setting);
+			}
+
+			async function loadSettings() {
+				const fragment = new DocumentFragment();
+
+				const settings = await fetchData("settings.json");
+
+				settings.forEach((setting) => {
+					createSetting(
+						setting.name,
+						setting.item,
+						setting.placeholder,
+						localStorage.getItem(setting.item) || "",
+						fragment,
+					);
+				});
+
+				const button = document.createElement("button");
+				button.className = "button";
+				button.textContent = "Save Settings";
+				fragment.appendChild(button);
+
+				button.onclick = () => {
+					settings.forEach((setting) => {
+						localStorage.setItem(
+							setting.item,
+							document.getElementById(setting.item).value,
+						);
+					});
+				};
+
+				g_container.appendChild(fragment);
+			}
+
+			async function loadWDBG() {
+				const fragment = new DocumentFragment();
+
+				const data = await fetchData("embed.json");
+				data.forEach((box) => {
+					createBox(
+						`assets/${box.id}.png`,
+						box.title,
+						`embed.html?t=0&id=${box.id}`,
+						fragment,
+					);
+				});
+
+				g_container.appendChild(fragment);
+			}
+
+			async function loadGN() {
+				const fragment = new DocumentFragment();
+
+				try {
+					const zones = await fetchData(
+						"https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json",
+					);
+					zones.forEach((zone) => {
+						const imgSrc = zone.cover.replace(
+							"{COVER_URL}",
+							"https://cdn.jsdelivr.net/gh/gn-math/covers@main",
+						);
+						createBox(imgSrc, zone.name, `embed.html?t=1&id=${zone.id}`, fragment);
+					});
+				} catch (error) {
+					console.error(error);
+				}
+
+				g_container.appendChild(fragment);
+			}
+
+			async function loadCMG() {
+				const fragment = new DocumentFragment();
+
+				try {
+					const data = await fetchData("temp/cmatgame_games_with_levels.json");
+					data.game.forEach((game) => {
+						const imgSrc = game.si
+							? "https://www.coolmathgames.com/" + game.si
+							: "https://www.coolmathgames.com/sites/default/files/styles/og_image_game_page/public/" +
+								game.og;
+						createBox(imgSrc, game.title, `embed.html?t=2&id=${game.id}`, fragment);
+					});
+				} catch (error) {
+					console.error(error);
+				}
+
+				g_container.appendChild(fragment);
+			}
+
+			function load() {
+				createBtn(0, "");
+				createBtn(1, "WDBG");
+				createBtn(2, "GN");
+				createBtn(3, "CMG");
+
+				loadBtn(g_btnSelected);
+			}
+
+			load();
+		</script>
+	</body>
+
+</html>

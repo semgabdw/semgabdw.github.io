@@ -1,0 +1,176 @@
+
+:root {
+	--a: #dddddd;
+	--b: #111111;
+	--c: #1a1a1a;
+	--d: #2a2a2a;
+	--e: #333333;
+	--f: #444444;
+	--g: #808080;
+	--h: #6666ff;
+	--i: #4d4dff;
+}
+
+[data-theme~="dark-contrast"] {
+	--a: #ffffff;
+	--b: #333333;
+	--c: #000000;
+	--d: #4a4a4a;
+	--e: #555555;
+	--f: #666666;
+	--g: #808080;
+	--h: #6666ff;
+	--i: #4d4dff;
+}
+
+[data-theme~="light"] {
+	--a: #111111;
+	--b: #dddddd;
+	--c: #eaeaea;
+	--d: #dadada;
+	--e: #bbbbbb;
+	--f: #c4c4c4;
+	--g: #808080;
+	--h: #8dffff;
+	--i: #66ffff;
+}
+
+[data-theme~="light-contrast"] {
+	--a: #000000;
+	--b: #dddddd;
+	--c: #ffffff;
+	--d: #dadada;
+	--e: #bbbbbb;
+	--f: #c4c4c4;
+	--g: #808080;
+	--h: #8dffff;
+	--i: #66ffff;
+}
+
+body {
+	background: var(--c);
+	color: var(--a);
+	font-family: Arial;
+	margin: 0;
+	padding: 0;
+}
+
+#navbar {
+	background: var(--b);
+	display: flex;
+	padding: 8px;
+	gap: 8px;
+}
+
+.button {
+	border: none;
+	border-radius: 4px;
+	background: var(--e);
+	color: var(--a);
+	padding: 8px;
+	cursor: pointer;
+}
+
+.button:hover {
+	background: var(--f);
+}
+
+.button.active {
+	background: var(--h);
+}
+
+.button.active:hover {
+	background: var(--i);
+}
+
+.boxes-container {
+	padding: 8px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+	gap: 8px;
+	background: var(--c);
+}
+
+.settings-button {
+	padding: 8px;
+    background-image: url("assets/gear.png");
+    background-size: contain;
+    width: 32px; 
+    height: 32px;
+    border: none;
+    background-color: transparent;
+	cursor: pointer;
+}
+
+.settings-container {
+	width: 100%;
+	box-sizing: border-box;
+	display: block;
+	padding: 8px;
+}
+
+.settings-container button {
+	margin-top: 8px;
+}
+
+.setting {
+	width: 100%;
+}
+
+.setting p {
+	width: 100%;
+	margin: 4px;
+	font-weight: bold;
+}
+
+.setting input {
+	width: 100%;
+	height: 32px;
+	border: none;
+	border-radius: 4px;
+	padding: 4px;
+	box-sizing: border-box;
+	margin-bottom: 8px;
+	background: var(--d);
+	color: var(--a);
+	border: 1px solid var(--g);
+
+}
+
+.setting input:focus {
+	outline-color: var(--h);
+	outline-width: 4px;
+	outline-offset: 0px;
+	box-shadow: none;
+}
+
+.setting input::placeholder {
+	color: var(--g);
+}
+
+.box {
+	background: var(--d);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	padding: 8px;
+}
+
+.box img {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.box a {
+	color: var(--a);
+	text-align: center;
+	margin-top: 8px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.box a:hover {
+	color: var(--h);
+}

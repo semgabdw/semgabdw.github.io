@@ -1,0 +1,27 @@
+[
+	{
+		"name": "Title",
+		"item": "title",
+		"placeholder": "WDB Games"
+	},
+	{
+		"name": "Favicon URL",
+		"item": "faviconUrl",
+		"placeholder": "favicon.ico"
+	},
+	{
+		"name": "Keybind",
+		"item": "keybind",
+		"placeholder": "v"
+	},
+	{
+		"name": "Keybind URL",
+		"item": "keybindUrl",
+		"placeholder": "about:blank"
+	},
+	{
+		"name": "Theme",
+		"item": "theme",
+		"placeholder": "dark"
+	}
+]
