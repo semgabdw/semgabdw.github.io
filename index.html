@@ -12,7 +12,7 @@
 			document.body.dataset.theme = localStorage.getItem("theme") || "dark";
 		
 			const g_params = new URLSearchParams(window.location.search);
-			let g_btnSelected = Number(g_params.get("b") || 1);
+			let g_btnSelected = Number(g_params.get("b") || 2);
 			
 			const g_cache = {};
 			const g_navbar = document.getElementById("navbar");
@@ -61,12 +61,15 @@
 						loadSettings();
 						break;
 					case 1:
-						loadWDBG();
+						loadCustom();
 						break;
 					case 2:
-						loadGN();
+						loadWDBG();
 						break;
 					case 3:
+						loadGN();
+						break;
+					case 4:
 						loadCMG();
 						break;
 				}
@@ -142,6 +145,22 @@
 				g_container.appendChild(fragment);
 			}
 
+			async function loadCustom() {
+				const fragment = new DocumentFragment();
+
+				const data = await fetchData("default.json");
+				data.forEach((box) => {
+					createBox(
+						`assets/${box.id}.png`,
+						box.title,
+						`embed.html?t=0&id=${box.id}`,
+						fragment,
+					);
+				});
+
+				g_container.appendChild(fragment);
+			}
+
 			async function loadWDBG() {
 				const fragment = new DocumentFragment();
 
@@ -200,9 +219,10 @@
 
 			function load() {
 				createBtn(0, "");
-				createBtn(1, "WDBG");
-				createBtn(2, "GN");
-				createBtn(3, "CMG");
+				createBtn(1, "Custom");
+				createBtn(2, "WDBG");
+				createBtn(3, "GN");
+				createBtn(4, "CMG");
 
 				loadBtn(g_btnSelected);
 			}

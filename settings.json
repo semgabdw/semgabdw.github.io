@@ -23,5 +23,10 @@
 		"name": "Theme",
 		"item": "theme",
 		"placeholder": "dark"
+	},
+	{
+		"name": "Custom JSON URL",
+		"item": "customJsonUrl",
+		"placeholder": "default.json"
 	}
 ]
