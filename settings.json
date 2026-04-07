@@ -27,6 +27,6 @@
 	{
 		"name": "Custom JSON URL",
 		"item": "customJsonUrl",
-		"placeholder": "default.json"
+		"placeholder": "custom.json"
 	}
 ]

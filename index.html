@@ -148,7 +148,7 @@
 			async function loadCustom() {
 				const fragment = new DocumentFragment();
 
-				const data = await fetchData("default.json");
+				const data = await fetchData(localStorage.getItem("customJsonUrl") || "custom.json");
 				data.forEach((box) => {
 					createBox(
 						`assets/${box.id}.png`,
@@ -164,15 +164,22 @@
 			async function loadWDBG() {
 				const fragment = new DocumentFragment();
 
-				const data = await fetchData("embed.json");
-				data.forEach((box) => {
-					createBox(
-						`assets/${box.id}.png`,
-						box.title,
-						`embed.html?t=0&id=${box.id}`,
-						fragment,
+				try {
+					const data = await fetchData(
+						"https://cdn.jsdelivr.net/gh/wowdabug/server@main/wdbg.json"
 					);
-				});
+					data.forEach((box) => {
+						const imgSrc = `https://cdn.jsdelivr.net/gh/wowdabug/server@main/assets/${box.id}.png`
+						createBox(
+							imgSrc,
+							box.title,
+							`embed.html?t=1&id=${box.id}`,
+							fragment,
+						);
+					});
+				} catch (error) {
+					console.error(error);
+				}
 
 				g_container.appendChild(fragment);
 			}
@@ -189,7 +196,7 @@
 							"{COVER_URL}",
 							"https://cdn.jsdelivr.net/gh/gn-math/covers@main",
 						);
-						createBox(imgSrc, zone.name, `embed.html?t=1&id=${zone.id}`, fragment);
+						createBox(imgSrc, zone.name, `embed.html?t=2&id=${zone.id}`, fragment);
 					});
 				} catch (error) {
 					console.error(error);
@@ -208,7 +215,7 @@
 							? "https://www.coolmathgames.com/" + game.si
 							: "https://www.coolmathgames.com/sites/default/files/styles/og_image_game_page/public/" +
 								game.og;
-						createBox(imgSrc, game.title, `embed.html?t=2&id=${game.id}`, fragment);
+						createBox(imgSrc, game.title, `embed.html?t=3&id=${game.id}`, fragment);
 					});
 				} catch (error) {
 					console.error(error);
