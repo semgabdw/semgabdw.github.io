@@ -82,7 +82,7 @@
 				const data = await response.json();
 
 				const game = data.find((game) => game.id == g_id);
-				const url = "https://cdn.jsdelivr.net/gh/wowdabug/server@main/" + "2048/index.html";
+				const url = "https://cdn.jsdelivr.net/gh/wowdabug/server@main/" + game.id + "/index.html";
 				
 				fetch(url + "?t=" + Date.now())
 					.then((response) => response.text())
