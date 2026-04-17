@@ -110,10 +110,11 @@
 			}
 
 			async function loadGN() {
-				const zonesURL = "https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json";
-				const coverURL =
-					"https://cdn.jsdelivr.net/gh/%67%6e%2d%6d%61%74%68/covers@main";
-				const htmlURL = "https://cdn.jsdelivr.net/gh/%67%6e%2d%6d%61%74%68/html@main";
+				const user = "freebuisness";
+
+				const zonesURL = "https://cdn.jsdelivr.net/gh/" + user + "/assets/zones.json";
+				const coverURL = "https://cdn.jsdelivr.net/gh/" + user + "/covers@main";
+				const htmlURL = "https://cdn.jsdelivr.net/gh/" + user + "/html@main";
 
 				let zoneViewer = document.createElement("div");
 				zoneViewer.id = "viewer";

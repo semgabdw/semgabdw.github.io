@@ -186,15 +186,16 @@
 
 			async function loadGN() {
 				const fragment = new DocumentFragment();
+				const user = "freebuisness";
 
 				try {
 					const zones = await fetchData(
-						"https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json",
+						"https://cdn.jsdelivr.net/gh/" + user + "/assets/zones.json",
 					);
 					zones.forEach((zone) => {
 						const imgSrc = zone.cover.replace(
 							"{COVER_URL}",
-							"https://cdn.jsdelivr.net/gh/gn-math/covers@main",
+							"https://cdn.jsdelivr.net/gh/" + user + "/covers@main",
 						);
 						createBox(imgSrc, zone.name, `embed.html?t=2&id=${zone.id}`, fragment);
 					});
