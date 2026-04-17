@@ -74,39 +74,47 @@
 			}
 
 			async function loadWDBG() {
-				let gameViewer = document.createElement("div");
+				let type = 0;
+				if (typeof document.write !== "function") {
+					console.warn("document.write not supported");
+					type = 1;
+				}
+
+				const gameViewer = document.createElement("div");
 				gameViewer.id = "viewer";
 				document.body.appendChild(gameViewer);
 
-				const response = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/wdbg.json");
-				const data = await response.json();
+				const responseA = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/wdbg.json");
+				const data = await responseA.json();
 
 				const game = data.find((game) => game.id == g_id);
 				const url = "https://cdn.jsdelivr.net/gh/wowdabug/server@main/" + game.id + "/index.html";
 				
-				fetch(url + "?t=" + Date.now())
-					.then((response) => response.text())
-					.then((html) => {
-						html = html.replace("<head>", "<head>" + "<base href=\"" + url + "\">");
-						g_frame.sandbox = "allow-scripts allow-same-origin allow-forms allow-pointer-lock";
-						
-						gameViewer.appendChild(g_frame);
+				const responseB = await fetch(url + "?t=" + Date.now());
+				const html = await responseB.text();
+				
+				const fixedHtml = html.replace("<head>", "<head>" + "<base href=\"" + url + "\">");
+				g_frame.sandbox = "allow-scripts allow-same-origin allow-forms allow-pointer-lock";
+				
+				gameViewer.appendChild(g_frame);
+				switch (type) {
+					case 0:
 						g_frame.contentDocument.open();
-						g_frame.contentDocument.write(html);
+						g_frame.contentDocument.write(fixedHtml);
 						g_frame.contentDocument.close();
-						g_frame.style.display = "block";
-						try {
-							const url = new URL(window.location);
-							url.searchParams.set("id", game.id);
-							history.pushState(null, "", url.toString());
-						} catch (error) {
-							console.error(error);
-						}
-					})
-					.catch((error) => {
-						console.error(error);
-						alert(error);
-					});
+						break;
+					case 1:
+						g_frame.srcdoc = fixedHtml;
+						break;
+					case 2:
+						const blob = new Blob([fixedHtml], { 
+							type: "text/html" 
+						});
+						g_frame.src = URL.createObjectURL(blob);
+						break;
+				}
+
+				g_frame.style.display = "block";
 			}
 
 			async function loadGN() {
@@ -138,13 +146,6 @@
 							g_frame.contentDocument.write(html);
 							g_frame.contentDocument.close();
 							g_frame.style.display = "block";
-							try {
-								const url = new URL(window.location);
-								url.searchParams.set("id", zone.id);
-								history.pushState(null, "", url.toString());
-							} catch (error) {
-								console.error(error);
-							}
 						})
 						.catch((error) => {
 							console.error(error);
