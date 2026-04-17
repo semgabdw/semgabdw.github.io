@@ -166,7 +166,7 @@
 
 				try {
 					const data = await fetchData(
-						"https://cdn.jsdelivr.net/gh/wowdabug/server@main/wdbg.json"
+						"https://cdn.jsdelivr.net/gh/wowdabug/server@main/games.json"
 					);
 					data.forEach((box) => {
 						const imgSrc = `https://cdn.jsdelivr.net/gh/wowdabug/server@main/assets/${box.id}.png`
@@ -210,7 +210,9 @@
 				const fragment = new DocumentFragment();
 
 				try {
-					const data = await fetchData("temp/cmatgame_games_with_levels.json");
+					const data = await fetchData(
+						"https://cdn.jsdelivr.net/gh/wowdabug/server@main/cmatgame_games_with_levels.json"
+					);
 					data.game.forEach((game) => {
 						const imgSrc = game.si
 							? "https://www.coolmathgames.com/" + game.si

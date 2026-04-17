@@ -84,7 +84,7 @@
 				gameViewer.id = "viewer";
 				document.body.appendChild(gameViewer);
 
-				const responseA = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/wdbg.json");
+				const responseA = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/games.json");
 				const data = await responseA.json();
 
 				const game = data.find((game) => game.id == g_id);
