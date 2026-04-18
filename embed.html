@@ -83,7 +83,7 @@
 				const gameViewer = document.createElement("div");
 				gameViewer.id = "viewer";
 				document.body.appendChild(gameViewer);
-
+				
 				const responseA = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/games.json");
 				const data = await responseA.json();
 
@@ -92,7 +92,7 @@
 				
 				const responseB = await fetch(url + "?t=" + Date.now());
 				const html = await responseB.text();
-				
+
 				const fixedHtml = html.replace("<head>", "<head>" + "<base href=\"" + url + "\">");
 				g_frame.sandbox = "allow-scripts allow-same-origin allow-forms allow-pointer-lock";
 				
