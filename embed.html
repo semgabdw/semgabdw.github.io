@@ -43,10 +43,26 @@
 		<iframe id="frame"></iframe>
 		<script src="main.js"></script>
 		<script>
-			g_frame = document.getElementById("frame");
-			g_params = new URLSearchParams(window.location.search);
-			g_type = Number(g_params.get("t"));
-			g_id = Number(g_params.get("id"));
+			const g_frame = document.getElementById("frame");
+			const g_params = new URLSearchParams(window.location.search);
+
+			const g_typeParam = g_params.get("t");
+			const g_idParam = g_params.get("id");
+
+			if (g_typeParam === null && g_idParam === null) {
+				throw new Error("no type and id parameters");
+			}
+
+			if (g_typeParam === null) {
+				throw new Error("no type parameter");
+			}
+
+			if (g_idParam === null) {
+				throw new Error("no id parameter");
+			}
+
+			const g_type = Number(g_typeParam);
+			const g_id = Number(g_idParam);
 
 			function load() {
 				switch (g_type) {
@@ -74,6 +90,10 @@
 			}
 
 			async function loadWDBG() {
+				const user = "wowdabug";
+				
+				const baseUrl = "https://cdn.jsdelivr.net/gh/" + user + "/server@main/";
+
 				let type = 0;
 				if (typeof document.write !== "function") {
 					console.warn("document.write not supported");
@@ -84,11 +104,11 @@
 				gameViewer.id = "viewer";
 				document.body.appendChild(gameViewer);
 				
-				const responseA = await fetch("https://cdn.jsdelivr.net/gh/wowdabug/server@main/games.json");
+				const responseA = await fetch(baseUrl + "games.json");
 				const data = await responseA.json();
 
 				const game = data.find((game) => game.id == g_id);
-				const url = "https://cdn.jsdelivr.net/gh/wowdabug/server@main/" + game.id + "/index.html";
+				const url = baseUrl + game.id + "/index.html";
 				
 				const responseB = await fetch(url + "?t=" + Date.now());
 				const html = await responseB.text();
