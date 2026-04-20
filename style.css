@@ -93,7 +93,7 @@ body {
 
 .settings-button {
 	padding: 8px;
-    background-image: url("assets/gear.png");
+    background-image: url("gear.png");
     background-size: contain;
     width: 32px; 
     height: 32px;

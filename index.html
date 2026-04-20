@@ -69,9 +69,6 @@
 					case 3:
 						loadGN();
 						break;
-					case 4:
-						loadCMG();
-						break;
 				}
 			}
 
@@ -80,10 +77,10 @@
 				box.className = "box";
 
 				const img = document.createElement("img");
-				img.loading = "lazy";
+				img.loading = "eager";
 				img.src = imgSrc;
 				img.onerror = () => {
-					img.src = "assets/error.png";
+					img.src = "error.png";
 				};
 				box.appendChild(img);
 
@@ -206,33 +203,11 @@
 				g_container.appendChild(fragment);
 			}
 
-			async function loadCMG() {
-				const fragment = new DocumentFragment();
-
-				try {
-					const data = await fetchData(
-						"https://cdn.jsdelivr.net/gh/wowdabug/server@main/cmatgame_games_with_levels.json"
-					);
-					data.game.forEach((game) => {
-						const imgSrc = game.si
-							? "https://www.coolmathgames.com/" + game.si
-							: "https://www.coolmathgames.com/sites/default/files/styles/og_image_game_page/public/" +
-								game.og;
-						createBox(imgSrc, game.title, `embed.html?t=3&id=${game.id}`, fragment);
-					});
-				} catch (error) {
-					console.error(error);
-				}
-
-				g_container.appendChild(fragment);
-			}
-
 			function load() {
 				createBtn(0, "");
 				createBtn(1, "Custom");
 				createBtn(2, "WDBG");
 				createBtn(3, "GN");
-				// createBtn(4, "CMG");
 
 				loadBtn(g_btnSelected);
 			}
